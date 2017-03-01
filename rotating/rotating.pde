@@ -2,64 +2,71 @@ int x = 0;
 float y = 0.1;
 float z = 0.1;
 int col; 
-color[] colarray = new color[10];
+int selectedColor;
+int timer;
+color[] colarray = new color[255];
 
 void setup()
 {
   size(1600, 1200, P3D);
   smooth();
-
-  for (int i = 0; i < 10; i++) {
-    colarray[i] = color(random(255), random(255), random(255));
-  }
-  col = color(colarray[(int)random(0, 9)]);
 }
 
 void draw() 
 {
   translate(-100, 250, 0);
-  background(255);
+  
+  if (millis() - timer > 1000) { 
+    selectedColor++;
+    selectedColor %= colarray.length; 
+    timer = millis();
+    for (int i = 0; i < 255; i++) {
+    colarray[i] = color(random(255), random(255), random(255));
+    }
+  }
+  
+  background(timer % 255);
+  
   for (int i = 0; i < 2; i++) {
     for (int j = 0; j < 5; j++) {
-      translate(300, 0);
+      translate(450, 0);  //(300, 0) minimized center | (450, 0) maximized center
       pushMatrix();
       rotateX(PI/2);
-      //rotateZ(-z);
       if (j % 5 == 0 && i == 0) {
-        fill(colarray[0]);
+        fill(colarray[selectedColor % colarray.length]);
         rotateZ(z);
       } else if (j % 4 == 0 && i == 0) {
-        fill(colarray[1]);
+        fill(colarray[3*selectedColor % colarray.length]);
         rotateZ(z);
       } else if (j % 3 == 0 && i == 0) {
-        fill(colarray[2]);
+        fill(colarray[5*selectedColor % colarray.length]);
         rotateZ(-z);
       } else if (j % 2 == 0 && i == 0) {
-        fill(colarray[3]);
+        fill(colarray[7*selectedColor % colarray.length]);
         rotateZ(z);
       } else if (j % 1 == 0 && i == 0) {
-        fill(colarray[4]);
+        fill(colarray[11*selectedColor % colarray.length]);
         rotateZ(-z);
       } else if (j % 5 == 0 && i == 1) {
-        fill(colarray[5]);
+        fill(colarray[13*selectedColor % colarray.length]);
         rotateZ(-z);
       } else if (j % 4 == 0 && i == 1) {
-        fill(colarray[6]);
+        fill(colarray[17*selectedColor % colarray.length]);
         rotateZ(-z);
       } else if (j % 3 == 0 && i == 1) {
-        fill(colarray[7]);
+        fill(colarray[19*selectedColor % colarray.length]);
         rotateZ(z);
       } else if (j % 2 == 0 && i == 1) {
-        fill(colarray[8]);
+        fill(colarray[23*selectedColor % colarray.length]);
         rotateZ(-z);
       } else {
-        fill(colarray[9]);
+        fill(colarray[27*selectedColor % colarray.length]);
         rotateZ(z);
       }
       shape();
       popMatrix();
     }
-    translate(-1500, 450);
+    translate(-2250, 450);//(-1500, 450) minimized center | (-2250, 450) maximized center
   }
   z += 0.075;
 }
